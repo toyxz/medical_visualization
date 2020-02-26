@@ -1,0 +1,23 @@
+.order-list {
+  width: 70%;
+  margin-left: 15%;
+  .above-banner {
+    display: flex;
+    .add-order {
+        width: 100px;
+        text-align: left;
+        margin: 10px 0;
+    }
+    .search {
+        flex: 1;
+        text-align: right;
+        > span {
+            margin: 10px;
+        }
+    }
+  }
+  .paging {
+    text-align: right;
+    margin-top: 20px;
+  }
+}

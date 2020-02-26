@@ -1,15 +1,16 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import Background from '../../components/background';
+import RegisterForm from '../../components/registerFrom';
+import './index.scss';
 
 class Register extends React.Component {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
-      <h1>register</h1>
+      <div>
+        <Background>
+          <RegisterForm />
+        </Background>
+      </div>
     );
   }
 }

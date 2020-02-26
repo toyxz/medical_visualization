@@ -1,0 +1,18 @@
+.employee-form {
+    width: 40%;
+    position: absolute;
+    right: 45%;
+    top: 150px;
+.employee-form-submit-button {
+      width: 100%;
+      text-align: right;
+      display: flex;
+      .submit {
+        flex: 1;
+        margin: 10px;
+      }
+      .back {
+        flex: 1;
+      }
+    }
+}

@@ -22,7 +22,12 @@
       "no-bitwise": [0],
       "no-cond-assign": [0],
       "import/no-unresolved": [0],
-      "require-yield": [1]
+      "require-yield": [1],
+      "jsx-props-no-spreading": [1],
+      // 添加
+      "react/jsx-props-no-spreading": [1],
+      "class-methods-use-this": [1],
+      "react/destructuring-assignment": [1],
     },
     "parserOptions": {
       "ecmaFeatures": {

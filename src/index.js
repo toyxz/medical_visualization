@@ -2,7 +2,7 @@ import dva from 'dva';
 import React from 'react';
 import App from './app';
 import indexModel from './models/index.js';
-// import './index.css';
+import './index.scss';
 
 // 1. Initialize
 const app = dva();

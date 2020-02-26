@@ -8,7 +8,7 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: Path.resolve(__dirname, 'build'),
-    publicPath: '/build',
+    publicPath: 'build',
   },
   devServer: {
     hot: true,
@@ -22,7 +22,7 @@ module.exports = {
         test: /\.js|\.jsx/, use: 'babel-loader',
       },
       {
-        test: /\.scss$/,
+        test: /\.scss|\.css$/,
         use: [
           'style-loader', // 将 JS 字符串生成为 style 节点
           'css-loader', // 将 CSS 转化成 CommonJS 模块

@@ -1,16 +1,15 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import Background from '../../components/background';
+import LoginForm from '../../components/loginForm';
+import './index.scss';
 
 class Login extends React.Component {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div>
-        <h1>login</h1>
+        <Background>
+          <LoginForm />
+        </Background>
       </div>
     );
   }
