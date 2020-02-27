@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  Table, Pagination, Button, Radio,
+  Table, Pagination, Radio, Button,
 } from '@alifd/next';
 import HomePage from '../homePage';
 
 const { Column } = Table;
-class AuditInfo extends React.Component {
+class AuditOrder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,14 +16,10 @@ class AuditInfo extends React.Component {
   render() {
     return (
       <HomePage>
-        <div className="info-list">
+        <div className="order-list">
           <Table dataSource={dataSource()}>
-            <Column title="姓名" dataIndex="name" />
-            <Column title="性别" dataIndex="sex" />
-            <Column title="邮箱" dataIndex="email" />
-            <Column title="电话" dataIndex="tel" />
-            <Column title="入驻方式" dataIndex="registrationWay" />
-            <Column title="入驻代码" dataIndex="code" />
+            <Column title="订单流水号" dataIndex="orderNumber" />
+            <Column title="订单详情" dataIndex="orderDetail" />
             <Column title="审核决策" dataIndex="ifPass" />
             <Column title="审核意见" dataIndex="opinion" />
             <Column title=" " dataIndex="submit" />
@@ -37,24 +33,14 @@ class AuditInfo extends React.Component {
   }
 }
 
-export default AuditInfo;
-
-const result = {
-  PASS: true,
-  NOPASS: false,
-};
-
+export default AuditOrder;
 
 const dataSource = () => {
   const result = [];
   for (let i = 0; i < 5; i++) {
     result.push({
-      name: '9999000000',
-      sex: '男',
-      email: '137777777@qq.com',
-      tel: 'xxxxxxxx',
-      registrationWay: 'xxx',
-      code: '11111111111',
+      orderNumber: '9999000000',
+      orderDetail: <a href="#">查看</a>,
       ifPass: (
         <div>
           <Radio.Group>
