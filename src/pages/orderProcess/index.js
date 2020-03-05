@@ -40,7 +40,7 @@ export default OrderProcess;
 
 const dataSource = () => {
   const result = [];
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 5; ++i) {
     result.push({
       orderNumber: '9999000000',
       orderDetail: <a href="#">查看</a>,

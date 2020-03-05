@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDom from 'react-dom';
 import {
   Switch, Route, BrowserRouter as Router, browserHistory,
 } from 'dva/router';
@@ -21,6 +20,7 @@ import AuditInfo from './pages/auditInfo';
 import AuditOrder from './pages/auditOrder';
 import OrderProcess from './pages/orderProcess';
 import PermissionProcess from './pages/permissionProcess';
+
 
 class App extends React.Component {
   render() {
@@ -49,6 +49,7 @@ class App extends React.Component {
           </Switch>
         </div>
       </Router>
+
     );
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import { connect } from 'dva';
 import {
   Field, Form, Input, Grid, Button,
 } from '@alifd/next';
@@ -22,8 +22,27 @@ class RegisterForm extends React.Component {
     this.field = new Field(this);
   }
 
+  getVerifyCode() {
+    const { email } = this.field.values;
+    const { dispatch } = this.props;
+    if (email) {
+      dispatch({
+        type: 'user/sendEmail',
+        payload: { email },
+      });
+    } else {
+      console.log('邮箱还空着呢亲');
+    }
+  }
+
   handleSubmit() {
-    console.log(this.field.values);
+    const { dispatch } = this.props;
+    // 注意校验（还未添加）
+    // 校验成功 提交
+    dispatch({
+      type: 'user/register',
+      payload: this.field.values,
+    });
   }
 
   render() {
@@ -33,7 +52,7 @@ class RegisterForm extends React.Component {
         className="register-form"
         {...formItemLayout}
       >
-        <FormItem>
+        <FormItem format="email">
           <Input
             {...init('email')}
             placeholder="邮箱"
@@ -47,7 +66,11 @@ class RegisterForm extends React.Component {
               />
             </Col>
             <Col span={4}>
-              <Button>获取验证码</Button>
+              <Button
+                onClick={() => this.getVerifyCode()}
+              >
+                获取验证码
+              </Button>
             </Col>
           </Row>
         </FormItem>
@@ -84,4 +107,4 @@ class RegisterForm extends React.Component {
 }
 
 
-export default RegisterForm;
+export default connect()(RegisterForm);

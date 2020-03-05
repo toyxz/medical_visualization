@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDom from 'react-dom';
 import './index.scss';
 
 class Background extends React.Component {

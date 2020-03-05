@@ -1,4 +1,3 @@
-/* jshint esversion: 6 */
 const Path = require('path');
 const Webpack = require('webpack');
 
@@ -15,6 +14,9 @@ module.exports = {
     contentBase: Path.join(__dirname, 'public'),
     port: 9000,
     open: true,
+    proxy: {
+      '/api': 'http://localhost:7001',
+    },
   },
   module: {
     rules: [

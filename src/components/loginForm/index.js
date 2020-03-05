@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import { connect } from 'dva';
 import {
   Field, Form, Input, Radio, Grid,
 } from '@alifd/next';
@@ -23,7 +23,11 @@ class LoginForm extends React.Component {
   }
 
   handleSubmit() {
-    console.log(this.field.values);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'user/login',
+      payload: this.field.values,
+    });
   }
 
   render() {
@@ -74,4 +78,4 @@ class LoginForm extends React.Component {
 }
 
 
-export default LoginForm;
+export default connect()(LoginForm);
