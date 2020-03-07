@@ -23,7 +23,7 @@
       "no-cond-assign": [0],
       "import/no-unresolved": [0],
       "require-yield": [1],
-      "jsx-props-no-spreading": [0],
+      "jsx-props-no-spreading": [1],
       // 添加
       "react/jsx-props-no-spreading": [1],
       "class-methods-use-this": [1],

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import {
-  Field, Form, Input, Radio, Grid,
+  Field, Form, Input, Radio, Grid, Message
 } from '@alifd/next';
 import './index.scss';
 
@@ -20,6 +20,28 @@ class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.field = new Field(this);
+  }
+
+  componentDidUpdate() {
+    if (this.props.user.uiData.ifSendLogin) {
+      const { user, dispatch } = this.props;
+      const { appData: { loginState, loginMessage } } = user;
+      const { uiData: { ifSendLogin } } = user;
+      // 是否提交登陆按钮
+      if (ifSendLogin) {
+        Message.show({
+          type: loginState ? 'success' : 'error',
+          size: 'large',
+          content: loginMessage,
+        });
+        dispatch({
+          type: 'user/changeIfLogin',
+          payload: {
+            ifSendLogin: false,
+          },
+        });
+      }
+    }
   }
 
   handleSubmit() {
@@ -77,5 +99,7 @@ class LoginForm extends React.Component {
   }
 }
 
-
-export default connect()(LoginForm);
+function mapStateToProps(state) {
+  return { user: state.user };
+}
+export default connect(mapStateToProps)(LoginForm);

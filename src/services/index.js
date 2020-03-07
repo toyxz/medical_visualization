@@ -9,7 +9,7 @@ function getCookie(name) {
 }
 
 const postLogin = (loginInfo) => {
-  axios.post('/api/login', loginInfo, {
+  return axios.post('/api/login', loginInfo, {
     headers: {
       'x-csrf-token': getCookie('csrfToken'),
     },
@@ -19,7 +19,7 @@ const postLogin = (loginInfo) => {
 };
 
 const postEmail = (email) => {
-  axios.post('/api/emailVerify', email, {
+  return axios.post('/api/emailVerify', email, {
     headers: {
       'x-csrf-token': getCookie('csrfToken'),
     },
@@ -29,7 +29,7 @@ const postEmail = (email) => {
 };
 
 const postRegister = (registerInfo) => {
-  axios.post('/api/register', registerInfo, {
+  return axios.post('/api/register', registerInfo, {
     headers: {
       'x-csrf-token': getCookie('csrfToken'),
     },
@@ -37,6 +37,7 @@ const postRegister = (registerInfo) => {
     return result;
   });
 };
+
 module.exports = {
   postLogin,
   postEmail,
