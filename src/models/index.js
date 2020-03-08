@@ -1,21 +1,23 @@
-import { postLogin, postEmail, postRegister } from '../services/index';
+import { postLogin, postEmail, postRegister, checkAuth } from '../services/index';
+
 export default {
   namespace: 'user',
   state: {
     appData: {
       registerState: false, // false: 注册失败; true: 注册成功
-      registerMessage: '',  // 注册响应信息
-      emailState: false,    // false: 邮件发送失败; true: 邮件发送成功
-      emailMessage: '',     // 邮件验证码响应信息
-      loginState: false,    // false: 登陆失败; true: 登陆成功
-      loginMessage: '',     // 登陆响应信息
+      registerMessage: '', // 注册响应信息
+      emailState: false, // false: 邮件发送失败; true: 邮件发送成功
+      emailMessage: '', // 邮件验证码响应信息
+      loginState: false, // false: 登陆失败; true: 登陆成功
+      loginMessage: '', // 登陆响应信息
+      hasAuth: false,   // 是否经过信息认证（已登陆）
     },
     uiData: {
       ifPressEmail: false, // 是否按下了 发送邮箱验证码 的按钮，如果按下了那么要有对应Message弹出
       ifSendEmail: false, // 是否成功发送邮箱验证码（不需要管发送成功或者失败）
       countdown: 3,
       ifSendRegister: false, // 是否点击注册按钮
-      ifSendLogin: false,    // 是否成功发送登陆信息并得到响应（不需要管登陆成功或者失败）
+      ifSendLogin: false, // 是否成功发送登陆信息并得到响应（不需要管登陆成功或者失败）
     },
   },
   reducers: {
@@ -32,7 +34,7 @@ export default {
       };
     },
 
-    // 获取验证码按钮开始倒计时 
+    // 获取验证码按钮开始倒计时
     getCodeToZero(state) {
       const { uiData } = state;
       return {
@@ -44,7 +46,7 @@ export default {
       };
     },
 
-    // 获取验证码按钮开始倒计时 
+    // 获取验证码按钮开始倒计时
     countDown(state) {
       const { uiData } = state;
       const { countdown } = uiData;
@@ -52,7 +54,7 @@ export default {
         ...state,
         uiData: {
           ...uiData,
-          countdown: countdown-1,
+          countdown: countdown - 1,
         },
       };
     },
@@ -130,6 +132,17 @@ export default {
         },
       };
     },
+    // 更新认证状态
+    changeAuthState(state, action) {
+      const { appData } = state;
+      return {
+        ...state,
+        appData: {
+          ...appData,
+          hasAuth: action.payload.hasAuth,
+        },
+      };
+    },
 
   },
   effects: {
@@ -156,7 +169,7 @@ export default {
     * sendEmail({ payload }, { call, put, select }) {
       const response = yield call(postEmail, payload);
       const { success, message } = response.data;
-      let countDownNumber = yield select(state => state.user.uiData.countdown);
+      let countDownNumber = yield select((state) => state.user.uiData.countdown);
       // 不管邮件发送成功还是失败都要修改UI，才能有提示（这也是dva的一个痛点）
       yield put({
         type: 'setEmailCodeMessage',
@@ -175,8 +188,8 @@ export default {
       if (response && response.data && response.data.success) {
         yield put({ type: 'getCodeToZero' });
         // 执行倒计时
-        const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-        while(countDownNumber--) {
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        while (countDownNumber--) {
           yield call(delay, 1000); // 延时1s之后进行下一次的while循环执行
           yield put({ type: 'countDown' });
         }
@@ -198,6 +211,17 @@ export default {
         type: 'changeifRegister',
         payload: {
           ifSendRegister: true,
+        },
+      });
+    },
+
+    * checkAuth({ payload }, { call, put }) {
+      const response = yield call(checkAuth, payload);
+      const { hasLogin } = response.data;
+      yield put({
+        type: 'changeAuthState',
+        payload: {
+          hasAuth: hasLogin,
         },
       });
     },

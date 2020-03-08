@@ -5,7 +5,7 @@ import {
   Field, Form, Input, Message, Button,
 } from '@alifd/next';
 import './index.scss';
-import  { notNull, checkEmail } from '../../utils/check.js'; 
+import { notNull, checkEmail } from '../../utils/check.js';
 
 const FormItem = Form.Item;
 const formItemLayout = {

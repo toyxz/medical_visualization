@@ -38,8 +38,19 @@ const postRegister = (registerInfo) => {
   });
 };
 
+const checkAuth = (obj) => {
+  return axios.get('/api/checkAuth', null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+
 module.exports = {
   postLogin,
   postEmail,
   postRegister,
+  checkAuth,
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import {
-  Field, Form, Input, Radio, Grid, Message
+  Field, Form, Input, Radio, Grid, Message, Checkbox,
 } from '@alifd/next';
 import './index.scss';
 
@@ -76,7 +76,9 @@ class LoginForm extends React.Component {
         <FormItem>
           <Row>
             <Col span={12}>
-              <Radio label="记住我" />
+              <Checkbox {...init('rememberMe', {
+                 valueName: 'checked',
+              })}>记住我</Checkbox>
             </Col>
             <Col span={12}>
               <a href="register">忘记密码</a>

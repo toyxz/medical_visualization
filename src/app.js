@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Switch, Route, BrowserRouter as Router, browserHistory,
 } from 'dva/router';
+import AuthWaiting from './pages/authWaiting';
 import Login from './pages/login';
 import Register from './pages/register';
 import TipTpFillInfo from './pages/tipToFillInfo';
@@ -28,6 +29,7 @@ class App extends React.Component {
       <Router history={browserHistory}>
         <div className="wrapper">
           <Switch>
+            <Route path="/" exact component={AuthWaiting} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/fillForm" component={TipTpFillInfo} />
