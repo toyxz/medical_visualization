@@ -1,7 +1,7 @@
 import dva from 'dva';
 import React from 'react';
 import App from './app';
-import indexModel from './models/index.js';
+
 import './index.scss';
 
 // 1. Initialize
@@ -11,7 +11,11 @@ const app = dva();
 // app.use({});
 
 // 3. Model
-app.model(indexModel);
+app.model(require('./models/user.js').default); // 神奇 居然要default 否则找不到namespace
+app.model(require('./models/order.js').default);
+app.model(require('./models/data.js').default);
+
+
 
 // 4. Router
 app.router(() => <App />);
