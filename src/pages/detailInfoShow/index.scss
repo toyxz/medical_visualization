@@ -1,0 +1,19 @@
+.tool-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    .tool-button {
+      width: 100px;
+      height: 60px;
+      margin: 5px;
+      border: 1px solid;
+      border-color: #909090;
+      border-radius: 25px;
+      box-shadow: 5px 5px 3px #888888;
+      text-align: center;
+      line-height: 60px;
+      cursor: pointer;
+    }
+}

@@ -75,19 +75,30 @@ const downloadZip = (dataInfo) => {
     },
     responseType: 'blob', // 设置响应数据类型
   }).then((result) => {
-    console.log('-----result-----', result)
+    console.log('-----result-----', result);
     if (result.status == 200) {
-      let url = window.URL.createObjectURL(new Blob([result.data]));
-      let link= document.createElement('a');
-      link.style.display='none';
-      link.href=url;
-      link.setAttribute('download', 'daoload.zip');   // 自定义下载文件名（如exemple.txt）
+      const url = window.URL.createObjectURL(new Blob([result.data]));
+      const link = document.createElement('a');
+      link.style.display = 'none';
+      link.href = url;
+      link.setAttribute('download', 'daoload.zip'); // 自定义下载文件名（如exemple.txt）
       document.body.appendChild(link);
       link.click();
     }
     return result;
   });
 };
+// 获取图片对应的stl信息
+const getSTL = (dataInfo) => {
+  return axios.get('/api/getSTL', dataInfo, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+
 module.exports = {
   postLogin,
   postEmail,
@@ -97,4 +108,5 @@ module.exports = {
   addOrder,
   getCookie,
   downloadZip,
+  getSTL,
 };

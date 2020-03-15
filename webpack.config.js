@@ -14,9 +14,10 @@ module.exports = {
     contentBase: Path.join(__dirname, 'public'),
     port: 9000,
     open: true,
-    proxy: {
-      '/api': 'http://localhost:7001',
-    },
+    proxy: [{
+      context: ['/api', '/public'],
+      target: 'http://localhost:7001',
+    }],
   },
   module: {
     rules: [

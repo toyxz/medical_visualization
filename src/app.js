@@ -27,7 +27,7 @@ class App extends React.Component {
   render() {
     return (
       <Router history={browserHistory}>
-        <div className="wrapper">
+        <div className="wrapper" id="wrapper">
           <Switch>
             <Route path="/" exact component={AuthWaiting} />
             <Route path="/login" component={Login} />

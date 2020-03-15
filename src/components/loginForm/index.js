@@ -77,8 +77,11 @@ class LoginForm extends React.Component {
           <Row>
             <Col span={12}>
               <Checkbox {...init('rememberMe', {
-                 valueName: 'checked',
-              })}>记住我</Checkbox>
+                valueName: 'checked',
+              })}
+              >
+                记住我
+              </Checkbox>
             </Col>
             <Col span={12}>
               <a href="register">忘记密码</a>

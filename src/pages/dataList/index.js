@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'dva';
+import { withRouter } from 'dva/router';
+
 import {
   Card, Button, Box,
 } from '@alifd/next';
@@ -10,82 +13,104 @@ class DataList extends React.Component {
     super(props);
   }
 
+  componentDidUpdate() {
+    // 拿到数据就刷新
+    const { data, dispatch } = this.props;
+    const {
+      appData: {
+        stlData,
+      },
+    } = data;
+    if (data && data.appData && data.appData.stlData) {
+      this.props.history.push('detailInfoShow');
+    }
+  }
+
+  toView(item) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'data/getSTL',
+      payload: item.id,
+    });
+  }
+
   render() {
     return (
-      <HomePage className="data-wrapper">
-        <Box
-          spacing={200}
-          wrap="true"
-          direction="row"
-          style={{ padding: '100px' }}
-        >
-          { mockData.map((item) => {
-            return (
-              <Card
-                free
-                style={{ width: '200px' }}
-              >
-                <Card.Media style={{ width: '100', height: '100' }}>
-                  <img src={item.img} />
-                </Card.Media>
-                <Card.Header
-                  title={item.title}
-                  extra={[
-                    <Button type="primary" key="action1" text>查看</Button>,
-                  ]}
-                />
-                <Card.Content>
-                  { item.discribtion }
-                </Card.Content>
-              </Card>
-            );
-          })}
-
-        </Box>
+      <HomePage>
+        <div className="list">
+          <div className="list-item">
+            <Box
+              spacing={50}
+              wrap
+              justify="center"
+              margin={100}
+              direction="row"
+            >
+              { mockData.map((item, index) => {
+                return (
+                  <div
+                    className="box-180-50"
+                    key={index}
+                    onClick={() => this.toView(item)}
+                  >
+                    <div>{item.name}</div>
+                    <img
+                      src={item.img}
+                    />
+                  </div>
+                );
+              })}
+            </Box>
+          </div>
+        </div>
       </HomePage>
+
     );
   }
 }
 
-export default DataList;
+function mapStateToProps(state) {
+  return { data: state.data };
+}
+export default withRouter(connect(mapStateToProps)(DataList));
 
 
 const mockData = [{
   img: 'https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png',
-  title: 'Title',
-  discribtion: 'Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.',
+  name: 'Title',
+  id: '1',
 }, {
   img: 'https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png',
   name: 'Title',
-  discribtion: 'Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.',
+  id: '2',
 }, {
   img: 'https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png',
   name: 'Title',
-  discribtion: 'Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.',
+  id: '3',
 },
 {
   img: 'https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png',
   name: 'Title',
-  discribtion: 'Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.',
+  id: '4',
 },
 {
   img: 'https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png',
   name: 'Title',
-  discribtion: 'Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.',
+  id: '5',
 },
 {
   img: 'https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png',
   name: 'Title',
-  discribtion: 'Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.',
+  id: '6',
 },
 {
   img: 'https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png',
   name: 'Title',
-  discribtion: 'Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.',
+  id: '7',
 },
 {
   img: 'https://img.alicdn.com/tfs/TB1FNIOSFXXXXaWXXXXXXXXXXXX-260-188.png',
   name: 'Title',
-  discribtion: 'Ne petentium quaerendum nec, eos ex recteque mediocritatem, ex usu assum legendos temporibus. Ius feugiat pertinacia an, cu verterem praesent quo.',
+  id: '8',
 },
 ];

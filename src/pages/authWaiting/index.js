@@ -16,18 +16,20 @@ class AuthWaiting extends React.Component {
       this.props.history.push('/login');
     }
   }
+
   componentDidMount() {
-      // 鉴权
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'user/checkAuth',
-      });
+    // 鉴权
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'user/checkAuth',
+    });
   }
+
   render() {
     return (
-        <div>
-            <h1>waiting</h1>
-        </div>
+      <div>
+        <h1>waiting</h1>
+      </div>
     );
   }
 }

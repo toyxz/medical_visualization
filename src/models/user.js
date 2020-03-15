@@ -1,4 +1,6 @@
-import { postLogin, postEmail, postRegister, checkAuth } from '../services/index';
+import {
+  postLogin, postEmail, postRegister, checkAuth,
+} from '../services/index';
 
 export default {
   namespace: 'user',
@@ -10,7 +12,7 @@ export default {
       emailMessage: '', // 邮件验证码响应信息
       loginState: false, // false: 登陆失败; true: 登陆成功
       loginMessage: '', // 登陆响应信息
-      hasAuth: false,   // 是否经过信息认证（已登陆）
+      hasAuth: false, // 是否经过信息认证（已登陆）
     },
     uiData: {
       ifPressEmail: false, // 是否按下了 发送邮箱验证码 的按钮，如果按下了那么要有对应Message弹出

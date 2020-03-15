@@ -62,22 +62,25 @@ class OrderForm extends React.Component {
           <FormItem label="患者名称">
             <Input {...init('name', {
               rules: [notNull],
-            })} />
+            })}
+            />
             {this.field.getError('name')
               ? <span className="order-error-message">{this.field.getError('name').join(',')}</span> : ''}
           </FormItem>
           <FormItem label="患者性别">
             <RadioGroup {...init('sex', {
               rules: [notNull],
-            })}>
-                <Radio value="0">男</Radio>
-                <Radio value="1">女</Radio>
+            })}
+            >
+              <Radio value="0">男</Radio>
+              <Radio value="1">女</Radio>
             </RadioGroup>
             {this.field.getError('sex')
               ? <span className="order-error-message">{this.field.getError('sex').join(',')}</span> : ''}
           </FormItem>
           <FormItem label="患者身高">
-            <Input {...init('heigth', {
+            <Input
+              {...init('heigth', {
                 rules: [notNull],
               })}
               innerAfter={<span className="unit">cm</span>}
@@ -86,10 +89,11 @@ class OrderForm extends React.Component {
               ? <span className="order-error-message">{this.field.getError('heigth').join(',')}</span> : ''}
           </FormItem>
           <FormItem label="患者体重">
-            <Input {...init('weight', {
-              rules: [notNull],
-            })}
-            innerAfter={<span className="unit">kg</span>}
+            <Input
+              {...init('weight', {
+                rules: [notNull],
+              })}
+              innerAfter={<span className="unit">kg</span>}
             />
             {this.field.getError('weight')
               ? <span className="order-error-message">{this.field.getError('weight').join(',')}</span> : ''}
@@ -97,7 +101,8 @@ class OrderForm extends React.Component {
           <FormItem label="患者部位">
             <Select {...init('illPlace', {
               rules: [notNull],
-            })}>
+            })}
+            >
               {illPlaces.map((item) => {
                 return (<Option key={item} value={item}>{item}</Option>);
               })}
@@ -108,7 +113,8 @@ class OrderForm extends React.Component {
           <FormItem label="患者器官">
             <Select {...init('illOrgan', {
               rules: [notNull],
-            })}>
+            })}
+            >
               {illOrgans.map((item) => {
                 return (<Option key={item} value={item}>{item}</Option>);
               })}
@@ -129,9 +135,11 @@ class OrderForm extends React.Component {
               headers={{
                 'x-csrf-token': getCookie('csrfToken'),
               }}
-          >
+            >
               <Button type="primary">Upload File</Button>
-            </Upload>  这里差一个用户友好提示
+            </Upload>
+            {' '}
+            这里差一个用户友好提示
             {this.field.getError('uploadData')
               ? <span className="order-error-message">{this.field.getError('uploadData').join(',')}</span> : ''}
           </FormItem>
