@@ -1,5 +1,5 @@
 const axios = require('axios');
-
+const { transQuery } = require('../utils/dealQuery');
 // 封装获取 cookie 的方法
 function getCookie(name) {
   let arr; const reg = new RegExp(`(^| )${name}=([^;]*)(;|$)`);
@@ -98,7 +98,96 @@ const getSTL = (dataInfo) => {
     return result;
   });
 };
-
+// 提交注册详细信息审核
+const postRegisterDetailInfo = (dataInfo) => {
+  return axios.post('/api/postDetailInfo', dataInfo, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 获取用户审核信息状态
+const getRegisterState = (userAccount) => {
+  return axios.get('/api/getRegisterState', userAccount, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 用户确认审核状态后可以进入后台
+const confirmAudit = (userAccount) => {
+  return axios.get('/api/confirmAudit', userAccount, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+const getUserInfo = (userAccount) => {
+  return axios.get('/api/getUserInfo', userAccount, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+const getUserOrder = (userAccount) => {
+  const url = transQuery('/api/getUserOrder',userAccount);
+  return axios.get(url, null, {
+    headers: {
+      'connection': 'keep-alive',
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+const getAuditOrder = (query) => {
+  const url = transQuery('/api/getAuditOrder',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+const submitAuditOrder = (auditObj) => {
+  return axios.post('/api/submitAuditOrder', auditObj, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 审核员获取用户列表
+const getAuditUser = (query) => {
+  const url = transQuery('/api/getAuditUser',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 审核员提交审核用户意见
+const submitAuditUser = (auditObj) => {
+  return axios.post('/api/submitAuditUser', auditObj, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
 module.exports = {
   postLogin,
   postEmail,
@@ -109,4 +198,13 @@ module.exports = {
   getCookie,
   downloadZip,
   getSTL,
+  postRegisterDetailInfo,
+  getRegisterState,
+  confirmAudit,
+  getUserInfo,
+  getUserOrder,
+  getAuditOrder,
+  submitAuditOrder,
+  getAuditUser,
+  submitAuditUser,
 };

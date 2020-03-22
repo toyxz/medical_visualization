@@ -21,7 +21,7 @@ import AuditInfo from './pages/auditInfo';
 import AuditOrder from './pages/auditOrder';
 import OrderProcess from './pages/orderProcess';
 import PermissionProcess from './pages/permissionProcess';
-
+import MyInfo from './pages/myInfo';
 
 class App extends React.Component {
   render() {
@@ -39,6 +39,7 @@ class App extends React.Component {
             <Route path="/addOrder" component={OrderForm} />
             <Route path="/myOrder" component={OrderList} />
             <Route path="/myData" component={DataList} />
+            <Route path="/myInfo" component={MyInfo} />
             <Route path="/dataShow" component={DataShow} />
             <Route path="/detailInfoShow" component={DetailInfoShow} />
             <Route path="/buildData" component={BuildData} />

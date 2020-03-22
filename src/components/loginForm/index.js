@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'dva';
+import { withRouter } from 'dva/router';
 import {
   Field, Form, Input, Radio, Grid, Message, Checkbox,
 } from '@alifd/next';
 import './index.scss';
+import { notNull } from '../../utils/check';
 
 const FormItem = Form.Item;
 const { Row, Col } = Grid;
@@ -41,14 +43,22 @@ class LoginForm extends React.Component {
           },
         });
       }
+      if(loginState) {
+        this.props.history.push('fillForm');
+      }
     }
   }
 
   handleSubmit() {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'user/login',
-      payload: this.field.values,
+    const { validate } = this.field;
+    validate((errors, values) => {
+      if (errors === null ) {
+        dispatch({
+          type: 'user/login',
+          payload: this.field.values,
+        });
+      }
     });
   }
 
@@ -61,17 +71,25 @@ class LoginForm extends React.Component {
       >
         <FormItem>
           <Input
-            {...init('account')}
+            {...init('account', {
+              rules: [notNull],
+            })}
             placeholder="账号"
             innerBefore=" 😊"
           />
+          {this.field.getError('account')
+            ? <span className="login-error-message">{this.field.getError('account').join(',')}</span> : ''}
         </FormItem>
         <FormItem>
           <Input.Password
-            {...init('password')}
+            {...init('password', {
+              rules: [notNull],
+            })}
             placeholder="密码"
             innerBefore=" 😊"
           />
+          {this.field.getError('password')
+            ? <span className="login-error-message">{this.field.getError('password').join(',')}</span> : ''}
         </FormItem>
         <FormItem>
           <Row>
@@ -107,4 +125,4 @@ class LoginForm extends React.Component {
 function mapStateToProps(state) {
   return { user: state.user };
 }
-export default connect(mapStateToProps)(LoginForm);
+export default withRouter(connect(mapStateToProps)(LoginForm));

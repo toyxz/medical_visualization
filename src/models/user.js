@@ -1,5 +1,7 @@
 import {
   postLogin, postEmail, postRegister, checkAuth,
+  postRegisterDetailInfo, getRegisterState, confirmAudit,
+  getUserInfo,getAuditUser,submitAuditUser,
 } from '../services/index';
 
 export default {
@@ -13,6 +15,14 @@ export default {
       loginState: false, // false: 登陆失败; true: 登陆成功
       loginMessage: '', // 登陆响应信息
       hasAuth: false, // 是否经过信息认证（已登陆）
+      registerDetailState: false,// false: 注册失败; true: 注册成功
+      registerDetailMessage: '',// 注册具体信息响应信息
+      userAccount: '',// 存储用户账户名
+      auditState: null,  // 审核状态
+      userInfo: {}, // 用户信息
+      // ------审核-----
+      auditUserList: [],       // 审核用户列表
+      auditUserTotalNumber: 0, // 审核用户数量
     },
     uiData: {
       ifPressEmail: false, // 是否按下了 发送邮箱验证码 的按钮，如果按下了那么要有对应Message弹出
@@ -20,6 +30,8 @@ export default {
       countdown: 3,
       ifSendRegister: false, // 是否点击注册按钮
       ifSendLogin: false, // 是否成功发送登陆信息并得到响应（不需要管登陆成功或者失败）
+      auditResState: false, // 审核用户信息响应状态
+      auditResMessage: '',// 审核用户信息响应信息
     },
   },
   reducers: {
@@ -145,10 +157,79 @@ export default {
         },
       };
     },
-
+    // 注册具体信息的响应消息
+    setRegisterDetailMessage(state, action) {
+      const { appData } = state;
+      return {
+        ...state,
+        appData: {
+          ...appData,
+          registerDetailState: action.payload.registerDetailState,
+          registerDetailMessage: action.payload.registerDetailMessage,
+        },
+      };
+    },
+    // 登陆成功存储用户名称
+    setUserAccount(state, action) {
+      const { appData } = state;
+      return {
+        ...state,
+        appData: {
+          ...appData,
+          userAccount: action.payload.userAccount,
+        },
+      };
+    },
+    // 注册信息审核状态
+    setRegisterAuditState(state, action) {
+      const { appData } = state;
+      return {
+        ...state,
+        appData: {
+          ...appData,
+          auditState: action.payload.auditState,
+        },
+      };
+    },
+    // 设置用户信息
+    setUserInfo(state, action) {
+      const { appData } = state;
+      return {
+        ...state,
+        appData: {
+          ...appData,
+          userInfo: action.payload.userInfo,
+        },
+      };
+    },
+    // 审核员审核用户
+    setAuditUser(state, action) {
+      const { appData } = state;
+      return {
+        ...state,
+        appData: {
+          ...appData,
+          auditUserList: action.payload.auditUserList,
+          auditUserTotalNumber: action.payload.auditUserTotalNumber,
+        },
+      };
+    },
+    // 审核员审核用户信息响应
+    setSubmitAuditUser(state, action) {
+      const { uiData } = state;
+      return {
+        ...state,
+        uiData: {
+          ...uiData,
+          auditResState: action.payload.auditResState,
+          auditResMessage: action.payload.auditResMessage,
+        },
+      };
+    }
   },
   effects: {
     * login({ payload }, { call, put }) {
+      const userName = payload.account;
       const response = yield call(postLogin, payload);
       if (response.status === 200) {
         const { success, message } = response.data;
@@ -165,6 +246,14 @@ export default {
             ifSendLogin: true,
           },
         });
+        if(success) {
+          yield put({
+            type: 'setUserAccount',
+            payload: {
+              userAccount: userName,
+            },
+          });
+        }
       }
     },
 
@@ -226,6 +315,86 @@ export default {
           hasAuth: hasLogin,
         },
       });
+    },
+
+    * registerDetailInfo({ payload }, { call, put }) {
+      const response = yield call(postRegisterDetailInfo, payload);
+      if (response.status === 200) {
+        const { success, message } = response.data;
+        yield put({
+          type: 'setRegisterDetailMessage',
+          payload: {
+            registerDetailState: success,
+            registerDetailMessage: message,
+          },
+        });
+      }
+    },
+
+    * getRegisterState({ payload }, { call, put }) {
+      const response = yield call(getRegisterState, payload);
+      if (response.status === 200) {
+        const data = response.data;
+        yield put({
+          type: 'setRegisterAuditState',
+          payload: {
+            auditState: data.state,
+          },
+        });
+      }
+    },
+    // 用户确认审核状态 进入后台
+    *confirmAudit({ payload }, { call, put }) {
+      const response = yield call(confirmAudit, payload);
+      const { success, state } = response.data;
+      if (success && response.status === 200) {
+        yield put({
+          type: 'setRegisterAuditState',
+          payload: {
+            auditState: state,
+          },
+        });
+      }
+    },
+    // 获取用户身份信息
+    * getUserInfo({ payload }, { call, put }) {
+      const response = yield call(getUserInfo, payload);
+      const { user } = response.data;
+      if (user) {
+        yield put({
+          type: 'setUserInfo',
+          payload: {
+            userInfo: user,
+          },
+        });
+      }
+    },
+    *getAuditUser({ payload }, { call, put }) {
+      const response = yield call(getAuditUser, payload);
+      if (response.status === 200) {
+        const { userList, total } = response.data;
+        yield put({
+          type: 'setAuditUser',
+          payload: {
+            auditUserList: userList,
+            auditUserTotalNumber: total, 
+          },
+        });
+      }
+    },
+    // 修改审核用户状态
+    * submitAuditUser({ payload }, { call, put }) {
+      const response = yield call(submitAuditUser, payload);
+      if (response.status === 200) {
+        const { success, message } = response.data;
+        yield put({
+          type: 'setSubmitAuditUser',
+          payload: {
+            auditResState: success,
+            auditResMessage: message,
+          },
+        });
+      }
     },
   },
 };

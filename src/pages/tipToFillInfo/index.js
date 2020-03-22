@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'dva/router';
 import { Dialog } from '@alifd/next';
 
 class TipToFillInfo extends React.Component {
@@ -10,11 +11,11 @@ class TipToFillInfo extends React.Component {
   }
 
   okClick() {
-    console.log('hh1');
+    this.props.history.push('detailInfo');
   }
 
   cancelClick() {
-    console.log('hh2');
+    this.props.history.push('login');
   }
 
   render() {
@@ -34,4 +35,4 @@ class TipToFillInfo extends React.Component {
   }
 }
 
-export default TipToFillInfo;
+export default withRouter(TipToFillInfo);

@@ -1,11 +1,10 @@
 import React from 'react';
 import {
-  Form, Field, Input, Select, Upload, Button, Radio,
+  Form, Field, Input, Select, Upload, Button, Radio, Icon, Message,
 } from '@alifd/next';
 import { connect } from 'dva';
 import { notNull } from '../../utils/check.js';
 import { getCookie } from '../../services/index';
-
 
 import HomePage from '../homePage';
 import './index.scss';
@@ -26,6 +25,9 @@ class OrderForm extends React.Component {
   constructor(props) {
     super(props);
     this.field = new Field(this);
+    this.state = {
+      upload: false,
+    };
   }
 
   componentDidMount() {
@@ -36,16 +38,44 @@ class OrderForm extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    const { order } = this.props;
+    const { appData: { addOrderState, addOrderMessage } } = order;
+    if (addOrderMessage) {
+      Message.show({
+        type: addOrderState? 'success': 'error',
+        content: addOrderMessage,
+      });
+      setTimeout(() => {
+        this.props.history.push('/myOrder');
+      }, 500);
+    }
+  }
+
   handleSubmit() {
     const { validate } = this.field;
-    const { dispatch } = this.props;
+    const { dispatch, user } = this.props;
+    const { appData: { userAccount } } = user;
     validate((errors, values) => {
       if (errors === null) {
         dispatch({
           type: 'order/addOrder',
-          payload: this.field.values,
+          payload: {
+            formData: this.field.values,
+            userAccount,
+          }
         });
       }
+    });
+  }
+
+  reback() {
+    this.props.history.push('myOrder');
+  }
+
+  onUploadSuccess() {
+    this.setState({
+      upload: true,
     });
   }
 
@@ -80,13 +110,13 @@ class OrderForm extends React.Component {
           </FormItem>
           <FormItem label="患者身高">
             <Input
-              {...init('heigth', {
+              {...init('height', {
                 rules: [notNull],
               })}
               innerAfter={<span className="unit">cm</span>}
             />
-            {this.field.getError('heigth')
-              ? <span className="order-error-message">{this.field.getError('heigth').join(',')}</span> : ''}
+            {this.field.getError('height')
+              ? <span className="order-error-message">{this.field.getError('height').join(',')}</span> : ''}
           </FormItem>
           <FormItem label="患者体重">
             <Input
@@ -128,18 +158,15 @@ class OrderForm extends React.Component {
                 rules: [notNull],
               })}
               action="/api/uploadFile"
-              // beforeUpload={beforeUpload}
-              // onChange={onUploadChange}
-              // onSuccess={onUploadSuccess}
+              onSuccess={() => this.onUploadSuccess()}
               multiple
               headers={{
                 'x-csrf-token': getCookie('csrfToken'),
               }}
             >
               <Button type="primary">Upload File</Button>
+              {this.state.upload ? <Icon style={{color: 'green'}} type="select" /> : ''}
             </Upload>
-            {' '}
-            这里差一个用户友好提示
             {this.field.getError('uploadData')
               ? <span className="order-error-message">{this.field.getError('uploadData').join(',')}</span> : ''}
           </FormItem>
@@ -157,7 +184,7 @@ class OrderForm extends React.Component {
             <Form.Submit
               className="back"
               type="secondary"
-              onClick={() => this.handleSubmit()}
+              onClick={() => this.reback()}
             >
               返回
             </Form.Submit>
@@ -168,6 +195,9 @@ class OrderForm extends React.Component {
   }
 }
 function mapStateToProps(state) {
-  return { order: state.order };
+  return { 
+    order: state.order,
+    user: state.user,
+  };
 }
 export default connect(mapStateToProps)(OrderForm);

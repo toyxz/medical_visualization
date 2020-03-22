@@ -8,7 +8,13 @@ const checkEmail = {
   message: '邮箱格式错误',
 };
 
+const checkTel = {
+  pattern: /^1\d{10}$/,
+  message: '手机号错误',
+};
+
 export {
   notNull,
   checkEmail,
+  checkTel,
 };
