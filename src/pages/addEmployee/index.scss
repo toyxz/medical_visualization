@@ -3,7 +3,7 @@
     position: absolute;
     right: 45%;
     top: 150px;
-.employee-form-submit-button {
+    .employee-form-submit-button {
       width: 100%;
       text-align: right;
       display: flex;
@@ -15,4 +15,8 @@
         flex: 1;
       }
     }
+    .employee-error-message {
+      color: red;
+      font-size: .1em;
+  }
 }

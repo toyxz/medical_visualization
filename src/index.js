@@ -14,6 +14,9 @@ const app = dva();
 app.model(require('./models/user.js').default); // 神奇 居然要default 否则找不到namespace
 app.model(require('./models/order.js').default);
 app.model(require('./models/data.js').default);
+app.model(require('./models/role.js').default);
+app.model(require('./models/employee.js').default);
+
 
 
 // 4. Router

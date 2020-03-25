@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { withRouter } from 'dva/router';
 import {
-  Field, Form, Input, Radio, Grid, Message, Checkbox,
+  Field, Form, Input, Radio, Grid, Message, Checkbox, Icon,
 } from '@alifd/next';
 import './index.scss';
 import { notNull } from '../../utils/check';
@@ -75,7 +75,7 @@ class LoginForm extends React.Component {
               rules: [notNull],
             })}
             placeholder="账号"
-            innerBefore=" 😊"
+            innerBefore={<Icon style={{paddingLeft: '10px'}} type="account" />}
           />
           {this.field.getError('account')
             ? <span className="login-error-message">{this.field.getError('account').join(',')}</span> : ''}
@@ -86,7 +86,7 @@ class LoginForm extends React.Component {
               rules: [notNull],
             })}
             placeholder="密码"
-            innerBefore=" 😊"
+            innerBefore={<Icon style={{paddingLeft: '10px'}} type="account" />}
           />
           {this.field.getError('password')
             ? <span className="login-error-message">{this.field.getError('password').join(',')}</span> : ''}

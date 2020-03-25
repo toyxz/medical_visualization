@@ -212,7 +212,8 @@ class AuditOrder extends React.Component {
     dispatch({
       type: 'data/downloadZip',
       payload: {
-        orderNumber: order,
+        orderNumber: order.order_number,
+        userId: order.userid,
       },
     });
   }

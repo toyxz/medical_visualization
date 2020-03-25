@@ -89,8 +89,10 @@ const downloadZip = (dataInfo) => {
   });
 };
 // 获取图片对应的stl信息
-const getSTL = (dataInfo) => {
-  return axios.get('/api/getSTL', dataInfo, {
+const getSTL = (query) => {
+  const url = transQuery('/api/getSTL',query);
+
+  return axios.get(url, null, {
     headers: {
       'x-csrf-token': getCookie('csrfToken'),
     },
@@ -188,6 +190,100 @@ const submitAuditUser = (auditObj) => {
     return result;
   });
 };
+// 数据重建员工获取数据列表
+const getOrderData = (query) => {
+  const url = transQuery('/api/getOrderData',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 数据重建员提交重建数据
+const submitRebuildData = (dataObj) => {
+  return axios.post('/api/submitRebuildData', dataObj, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 用户获得数据
+const getImgData = (query) => {
+  const url = transQuery('/api/getImgData',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 获取分类目标项
+const getClassifyOption = () => {
+  return axios.get('/api/getClassifyOption', null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 获得分类目标值
+const getClassifyValue = (query) => {
+  const url = transQuery('/api/getClassifyValue',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+const getClassfyImgData = (query) => {
+  const url = transQuery('/api/getClassfyImgData',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 获取用户角色
+const getAllRole = () => {
+  return axios.get('/api/getAllRole', null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 添加员工
+const addEmployee = (employeeInfo) => {
+  return axios.post('api/addEmployee', employeeInfo, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+}
+// 获得所有员工列表
+const getAllEmployee = (query) => {
+  const url = transQuery('/api/getAllEmployee',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
 module.exports = {
   postLogin,
   postEmail,
@@ -207,4 +303,13 @@ module.exports = {
   submitAuditOrder,
   getAuditUser,
   submitAuditUser,
+  getOrderData,
+  submitRebuildData,
+  getImgData,
+  getClassifyOption,
+  getClassifyValue,
+  getClassfyImgData,
+  getAllRole,
+  addEmployee,
+  getAllEmployee,
 };

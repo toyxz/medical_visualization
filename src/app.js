@@ -30,7 +30,7 @@ class App extends React.Component {
         <div className="wrapper" id="wrapper">
           <Switch>
             <Route path="/" exact component={AuthWaiting} />
-            <Route path="/login" component={Login} />
+            <Route path="/login" component={Login} auth={true} />
             <Route path="/register" component={Register} />
             <Route path="/fillForm" component={TipTpFillInfo} />
             <Route path="/detailInfo" component={DetailInfo} />
