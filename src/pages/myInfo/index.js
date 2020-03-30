@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Form } from '@alifd/next';
 import HomePage from '../homePage';
 import './index.scss';
-
+import checkAuth from '../../utils/checkAuth';
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {

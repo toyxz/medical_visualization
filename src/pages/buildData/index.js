@@ -4,7 +4,7 @@ import { Table, Pagination, Button, Dialog, Upload, Message } from '@alifd/next'
 import HomePage from '../homePage';
 import './index.scss';
 import { getCookie } from '../../services/index';
-
+import checkAuth from '../../utils/checkAuth';
 const { Column } = Table;
 
 class BuildData extends React.Component {
@@ -19,6 +19,7 @@ class BuildData extends React.Component {
       imgArray: {}, // 原数据和本地数据的映射
     };
   }
+  
 
   componentDidMount() {
     // 获取订单

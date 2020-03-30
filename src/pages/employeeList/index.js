@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { withRouter } from 'dva/router';
-
+import checkAuth from '../../utils/checkAuth';
 import {
   Table, Icon, Button, Pagination,
 } from '@alifd/next';
@@ -16,6 +16,7 @@ class EmployeeList extends React.Component {
       perPage: 10,
     };
   }
+
 
   componentDidMount() {
     const { dispatch } = this.props;

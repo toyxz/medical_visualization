@@ -5,7 +5,7 @@ import {
 import HomePage from '../homePage';
 import { connect } from 'dva';
 import './index.scss';
-
+import checkAuth from '../../utils/checkAuth';
 const { Column } = Table;
 const FormItem = Form.Item;
 const formItemLayout = {

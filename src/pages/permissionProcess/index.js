@@ -3,10 +3,18 @@ import {
   Table, Tag, Checkbox, Button, Icon,
 } from '@alifd/next';
 import HomePage from '../homePage';
-
+import checkAuth from '../../utils/checkAuth';
 const { Column } = Table;
 const { Group: TagGroup } = Tag;
 class PermissionProcess extends React.Component {
+
+  componentDidMount() {
+     
+  }
+
+  dataSource() {
+
+  }
   render() {
     return (
       <HomePage>
@@ -17,11 +25,11 @@ class PermissionProcess extends React.Component {
           <Icon type="add" />
           添加角色
         </Button>
-        <Table dataSource={dataSource()}>
-          <Column title="角色" dataIndex="role" />
-          <Column title="权限" dataIndex="permissionTag" style={{ width: '500px' }} />
-          <Column title="勾选" dataIndex="permissionChoice" />
-          <Column title=" " dataIndex="submit" />
+        <Table style={{paddingTop: '20px'}}dataSource={dataSource()}>
+          <Column align="center"  title="角色" dataIndex="role" />
+          <Column align="center"  title="权限" dataIndex="permissionTag" style={{ width: '500px' }} />
+          <Column align="center"  title="勾选" dataIndex="permissionChoice" />
+          <Column align="center"  title=" " dataIndex="submit" />
         </Table>
       </HomePage>
     );

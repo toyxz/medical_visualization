@@ -16,11 +16,13 @@ app.model(require('./models/order.js').default);
 app.model(require('./models/data.js').default);
 app.model(require('./models/role.js').default);
 app.model(require('./models/employee.js').default);
+app.model(require('./models/auth.js').default);
+
 
 
 
 // 4. Router
-app.router(() => <App />);
+app.router(() => <App/>);
 
 // 5. Start
 app.start('#app');

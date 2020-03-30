@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dropdown, Menu, Icon } from '@alifd/next';
+import { withRouter } from 'dva/router';
 
 
 class PageSetUpMenu extends React.Component {
@@ -13,7 +14,7 @@ class PageSetUpMenu extends React.Component {
   }
 
   logout() {
-    console.log('logout');
+    this.props.history.push('login')
   }
 
   modifyInfo() {
@@ -40,4 +41,4 @@ class PageSetUpMenu extends React.Component {
   }
 }
 
-export default PageSetUpMenu;
+export default withRouter(PageSetUpMenu);

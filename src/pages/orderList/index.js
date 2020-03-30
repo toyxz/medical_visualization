@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  Table, Icon, Button, Pagination, Search,
+  Table, Icon, Button, Pagination, Search,Dialog,Message,
 } from '@alifd/next';
 import HomePage from '../homePage';
 import { withRouter } from 'dva/router';
 import { connect } from 'dva';
-
+import checkAuth from '../../utils/checkAuth';
 import './index.scss';
 
 const { Column } = Table;
@@ -46,7 +46,32 @@ class OrderList extends React.Component {
   }
 
   componentDidUpdate() {
-
+    const { order } = this.props;
+    const { uiData: { payResState, payResMessage} } = order;
+    if (payResMessage) {
+      const { dispatch, user } = this.props;
+      const { appData: { userAccount } } = user;
+      Message.show({
+        type: payResState ? 'success' : 'error',
+        size: 'large',
+        content: payResMessage,
+      });
+      dispatch({
+        type: 'order/getUserOrder',
+        payload: {
+          userAccount,
+          page: 1,
+          perPage: this.state.perPage,
+        },
+      });
+      dispatch({
+        type: 'order/setConfirmPay',
+        payload: {
+          payResState: false,
+          payResMessage: '',
+        },
+      });
+    }
   }
 
   handleChange(currentPage) {
@@ -74,6 +99,69 @@ class OrderList extends React.Component {
     this.props.history.push('addOrder');
   }
 
+  dataSource(orderList){
+    const result = [];
+    orderList.forEach((item, index) => {
+      result.push({
+        orderNumber: item.order_number,
+        patientName: item.patient_name,
+        patientSex: orderConfig('patientSex', item.patient_sex),
+        patientHeight: item.patient_height,
+        patientWeight: item.patient_weight,
+        orderState: orderConfig('orderState' ,item.order_state),
+        payState: orderConfig('payState', item.pay_state),
+        rebuildState: <div>{orderConfig('rebuildState', item.rebuild_state)}<br/>{item.rebuild_state===1?<a href="#" onClick={() => this.viewPic(item)}>查看</a>:''}</div>,
+        patientPart: item.patient_part,
+        patientOrg: item.patient_org,
+        orderAmount: <div><span>{item.order_amount}</span><br />{(item.order_amount && item.pay_state === 0)?<a href="#" onClick={() => this.payForOrder(item)}>支付</a>:''}</div>,
+        createTime: item.create_time.slice(0,10),
+      });
+    });
+    return result;
+  };
+
+  viewPic(item) {
+    const { order_number, rebuild_img } = item;
+    Dialog.show({
+      title: '查看重建预览图片',
+      content: (
+        <div style={{width: '250px', height: '200px'}}>
+          <div>订单流水号: </div>
+          <div>{item.order_number}</div>
+          <div>预览截图: </div>
+          <div><img width='200' height='200' src={rebuild_img.slice(65)}/></div>
+        </div>
+      ),
+      // onOk: () => this.submitOrder({
+      //   'orderNumber': order.order_number,
+      //   'amount': this.field.getValue(`amount${index}`),
+      // }),
+    });
+  }
+
+  payForOrder(item) {
+    const { order_number } = item;
+    Dialog.show({
+      title: '扫码付款',
+      content: (
+        <div style={{width: '300px', height:'300px'}}>
+          <div><img width='100%' height='100%' src="/public/static/alipay.jpg"/></div>
+        </div>
+      ),
+      onOk: () => this.confirmPay(order_number),
+    });
+  }
+
+  // 确认支付，这里暂时没有后端接口，所以可以用
+  confirmPay(orderNumber) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/confirmPay',
+      payload: {
+        orderNumber,
+      }
+    });
+  }
   render() {
     const { order } = this.props;
     const { appData: { orderList, orderTotalNumber } } = order;
@@ -100,10 +188,11 @@ class OrderList extends React.Component {
               </div>
             </div>
             <Table
-              dataSource={dataSource(orderList)}>
+              dataSource={this.dataSource(orderList)}>
               <Column align="center" title="订单流水号" htmlTitle="Unique Id" dataIndex="orderNumber" />
               <Column align="center" title="订单状态" dataIndex="orderState" />
               <Column align="center" title="支付状态" dataIndex="payState" />
+              <Column align="center" title="重建状态" dataIndex="rebuildState" />
               <Column align="center" title="患病部位" dataIndex="patientPart" />
               <Column align="center" title="患病器官" dataIndex="patientOrg" />
               <Column align="center" title="病人姓名" dataIndex="patientName" />
@@ -136,25 +225,7 @@ function mapStateToProps(state) {
 }
 export default withRouter(connect(mapStateToProps)(OrderList));
 
-const dataSource = (orderList) => {
-  const result = [];
-  orderList.forEach((item, index) => {
-    result.push({
-      orderNumber: item.order_number,
-      patientName: item.patient_name,
-      patientSex: orderConfig('patientSex', item.patient_sex),
-      patientHeight: item.patient_height,
-      patientWeight: item.patient_weight,
-      orderState: orderConfig('orderState' ,item.order_state),
-      payState: orderConfig('payState', item.pay_state),
-      patientPart: item.patient_part,
-      patientOrg: item.patient_org,
-      orderAmount: item.order_amount,
-      createTime: item.create_time.slice(0,10),
-    });
-  });
-  return result;
-};
+
 const render = (value, index, record) => {
   return (
     <a href="#">
@@ -180,6 +251,11 @@ const orderConfig = (indexName, value) => {
     switch(value) {
       case 0: return '未支付';break;
       case 1: return '已支付';break;
+    }
+   } else if (indexName === 'rebuildState') {
+    switch(value) {
+      case 0: return '未重建';break;
+      case 1: return '已重建';break;
     }
    } else {
     return 'error!';

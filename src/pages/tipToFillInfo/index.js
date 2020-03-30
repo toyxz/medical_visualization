@@ -1,13 +1,17 @@
 import React from 'react';
 import { withRouter } from 'dva/router';
 import { Dialog } from '@alifd/next';
-
+import checkAuth from '../../utils/checkAuth';
 class TipToFillInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: true,
     };
+  }
+
+  componentWillMount() {
+    checkAuth(location.pathname)
   }
 
   okClick() {

@@ -2,6 +2,7 @@ import React from 'react';
 import { Dialog } from '@alifd/next';
 import { connect } from 'dva';
 import { withRouter } from 'dva/router';
+import checkAuth from '../../utils/checkAuth';
 
 class AuditState extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class AuditState extends React.Component {
   }
 
   rebackLogin() {
-    console.log('11');
+    this.props.history.push('login');
   }
 
   // 当用户审核通过的时候确认，确认后进入后台
@@ -40,7 +41,7 @@ class AuditState extends React.Component {
   }
 
   render() {
-    const { dispatch, user } = this.props;
+    const { user } = this.props;
     const { appData: { auditState } } = user;
     let message = null;
     switch(auditState) {
@@ -60,7 +61,8 @@ class AuditState extends React.Component {
     return (
       <div>
         <Dialog
-          title="注意"
+          title="您的审核状态为"
+          style={{width: '200px', height: '200px'}}
           visible={this.state.visible}
           onOk={() => this.checkstate()}
           onCancel={() => this.rebackLogin()}

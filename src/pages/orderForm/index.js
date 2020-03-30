@@ -5,7 +5,7 @@ import {
 import { connect } from 'dva';
 import { notNull } from '../../utils/check.js';
 import { getCookie } from '../../services/index';
-
+import checkAuth from '../../utils/checkAuth';
 import HomePage from '../homePage';
 import './index.scss';
 

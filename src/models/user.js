@@ -23,11 +23,13 @@ export default {
       // ------审核-----
       auditUserList: [],       // 审核用户列表
       auditUserTotalNumber: 0, // 审核用户数量
+      identify: '', // 登陆用户的身份
+      ifCompleteInfo: false, // 用户是否已经注册具体信息
     },
     uiData: {
       ifPressEmail: false, // 是否按下了 发送邮箱验证码 的按钮，如果按下了那么要有对应Message弹出
       ifSendEmail: false, // 是否成功发送邮箱验证码（不需要管发送成功或者失败）
-      countdown: 3,
+      countdown: 60,
       ifSendRegister: false, // 是否点击注册按钮
       ifSendLogin: false, // 是否成功发送登陆信息并得到响应（不需要管登陆成功或者失败）
       auditResState: false, // 审核用户信息响应状态
@@ -43,7 +45,7 @@ export default {
         uiData: {
           ...uiData,
           ifSendEmail: false,
-          countdown: 3,
+          countdown: 60,
         },
       };
     },
@@ -108,6 +110,8 @@ export default {
           ...appData,
           loginState: action.payload.loginState,
           loginMessage: action.payload.loginMessage,
+          identify: action.payload.identify,
+          ifCompleteInfo: action.payload.ifCompleteInfo,
         },
       };
     },
@@ -231,13 +235,16 @@ export default {
     * login({ payload }, { call, put }) {
       const userName = payload.account;
       const response = yield call(postLogin, payload);
+      console.log(response)
       if (response.status === 200) {
-        const { success, message } = response.data;
+        const { success, message, identify, ifCompleteInfo } = response.data;
         yield put({
           type: 'setLoginMessage',
           payload: {
             loginState: success,
             loginMessage: message,
+            identify,
+            ifCompleteInfo,
           },
         });
         yield put({

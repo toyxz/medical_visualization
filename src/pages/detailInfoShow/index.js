@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Loading, Message } from '@alifd/next';
 import './index.scss';
+import checkAuth from '../../utils/checkAuth';
 // import * as THREE from 'three';
 const THREE = require('three');
 const STLLoader = require('three-stl-loader')(THREE);
@@ -35,6 +36,7 @@ class DetailInfoShow extends React.Component {
       myMap: null,
     };
   }
+
 
   componentDidMount() {
     const { data } = this.props;

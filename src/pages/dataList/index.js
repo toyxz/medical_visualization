@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { withRouter } from 'dva/router';
-
+import checkAuth from '../../utils/checkAuth';
 import {
   Card, Button, Box, Select,Icon
 } from '@alifd/next';

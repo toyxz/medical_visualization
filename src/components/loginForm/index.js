@@ -27,7 +27,7 @@ class LoginForm extends React.Component {
   componentDidUpdate() {
     if (this.props.user.uiData.ifSendLogin) {
       const { user, dispatch } = this.props;
-      const { appData: { loginState, loginMessage } } = user;
+      const { appData: { loginState, loginMessage, identify, ifCompleteInfo } } = user;
       const { uiData: { ifSendLogin } } = user;
       // 是否提交登陆按钮
       if (ifSendLogin) {
@@ -43,8 +43,16 @@ class LoginForm extends React.Component {
           },
         });
       }
-      if(loginState) {
-        this.props.history.push('fillForm');
+      // 还是要判断员工和非员工
+      if (identify) {
+        this.props.history.push('blankPage');
+      } else if (loginState) {
+        // 判断用户审核状态
+        if (ifCompleteInfo) {
+          this.props.history.push('auditState');
+        } else {
+          this.props.history.push('fillForm');
+        }
       }
     }
   }

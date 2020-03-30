@@ -1,6 +1,6 @@
 import { downloadZip, getSTL, getOrderData, submitRebuildData, 
   getImgData, getClassifyOption, getClassifyValue,
-  getClassfyImgData,
+  getClassfyImgData,getProcessOrder,submitProcessOrder,
 } from '../services/index';
 
 export default {
@@ -13,10 +13,14 @@ export default {
       imgData: {datas:[],orders:[]},   // 重建数据图片
       classifyOption: [], // 分类目标项
       classifyValue: [], // 分类目标值
+      processOrder: [], // 订单审核员获取的订单
+      processOrderTotal: 0, // 订单审核员获取的订单总数量
     },
     uiData: {
       submitRebuildDataState: false,
       submitRebuildDataMessage: '',
+      submitProcessState: false,
+      submitProcessMessage: '',
     },
   },
   reducers: {
@@ -81,6 +85,28 @@ export default {
         appData: {
           ...appData,
           classifyValue: action.payload.classifyValue,
+        },
+      };
+    },
+    setProcessOrder(state,action) {
+      const { appData } = state;
+      return {
+        ...state,
+        appData: {
+          ...appData,
+          processOrder: action.payload.processOrder,
+          processOrderTotal: action.payload.processOrderTotal,
+        },
+      };
+    },
+    setSubmitProcessOrder(state,action) {
+      const { uiData } = state;
+      return {
+        ...state,
+        uiData: {
+          ...uiData,
+          submitProcessState: action.payload.submitProcessState,
+          submitProcessMessage: action.payload.submitProcessMessage,
         },
       };
     }
@@ -167,6 +193,32 @@ export default {
           type: 'setImgData',
           payload: {
             imgData: response.data,
+          },
+        });
+      }
+    },
+    *getProcessOrder({ payload }, { call, put }) {
+      const response = yield call(getProcessOrder, payload);
+      if (response.status === 200) {
+        const { total, orders } = response.data;
+        yield put({
+          type: 'setProcessOrder',
+          payload: {
+            processOrder: orders,
+            processOrderTotal: total,
+          },
+        });
+      }
+    },
+    *submitProcessOrder({ payload }, { call, put }) {
+      const response = yield call(submitProcessOrder, payload);
+      if (response.status === 200) {
+        const { success, message } = response.data;
+        yield put({
+          type: 'setSubmitProcessOrder',
+          payload: {
+            submitProcessState: success,
+            submitProcessMessage: message,
           },
         });
       }

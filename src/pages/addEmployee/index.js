@@ -7,7 +7,7 @@ import { withRouter } from 'dva/router';
 import HomePage from '../homePage';
 import {  notNull, checkTel } from '../../utils/check';
 import './index.scss';
-
+import checkAuth from '../../utils/checkAuth';
 const FormItem = Form.Item;
 const { Option } = Select;
 const formItemLayout = {
@@ -24,6 +24,7 @@ class AddEmployee extends React.Component {
     super(props);
     this.field = new Field(this);
   }
+
 
   componentDidMount() {
     // 获取系统角色

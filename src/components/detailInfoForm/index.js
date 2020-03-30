@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Field, Form, Input, Radio, Message,
+  Field, Form, Input, Radio, Message,Dialog,
 } from '@alifd/next';
 import './index.scss';
 import { connect } from 'dva';
@@ -42,29 +42,39 @@ class DetailInfoForm extends React.Component {
         content: registerDetailMessage,
       });
       setTimeout(() => {
-        this.props.history('auditState');
-      }, 2000);
+        this.props.history.push('auditState');
+      }, 500);
     }
   }
 
   handleSubmit() {
-    const { dispatch, user } = this.props;
     const { validate } = this.field;
-    const { appData: { userAccount } } = user;
     validate((errors, values) => {
         if (errors === null ) {
-          dispatch({
-              type: 'user/registerDetailInfo',
-              payload: {
-                formData: this.field.values,
-                userAccount: userAccount,
-              },
+          Dialog.confirm({
+            title: '确认',
+            content: '是否要提交所填信息',
+            messageProps:{
+                type: 'warning'
+            },
+            onOk: () => this.confirmSubmit()
           });
         }
     });
   }
 
-  
+  confirmSubmit() {
+    const { dispatch, user } = this.props;
+    const { appData: { userAccount } } = user;
+    dispatch({
+        type: 'user/registerDetailInfo',
+        payload: {
+          formData: this.field.values,
+          userAccount: userAccount,
+        },
+    });
+  }
+
   render() {
     const { init } = this.field;
 

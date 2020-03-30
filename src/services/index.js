@@ -284,6 +284,49 @@ const getAllEmployee = (query) => {
     return result;
   });
 };
+// 获取权限列表
+const getAuth = (query) => {
+  const url = transQuery('/api/getAuth',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 订单处理员获取订单
+const getProcessOrder = (query) => {
+  const url = transQuery('/api/getProcessOrder',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 订单处理员提交订单
+const submitProcessOrder = (orderObj) => {
+  return axios.post('/api/submitProcessOrder', orderObj, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+};
+// 用户确认支付 
+const confirmPay = (query) => {
+  const url = transQuery('/api/confirmPay',query);
+  return axios.get(url, null, {
+    headers: {
+      'x-csrf-token': getCookie('csrfToken'),
+    },
+  }).then((result) => {
+    return result;
+  });
+}
 module.exports = {
   postLogin,
   postEmail,
@@ -312,4 +355,8 @@ module.exports = {
   getAllRole,
   addEmployee,
   getAllEmployee,
+  getAuth,
+  getProcessOrder,
+  submitProcessOrder,
+  confirmPay,
 };

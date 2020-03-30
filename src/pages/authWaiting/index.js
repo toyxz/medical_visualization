@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'dva/router';
 import { connect } from 'dva';
 import { Button } from '@alifd/next';
+import checkAuth from '../../utils/checkAuth';
 
 class AuthWaiting extends React.Component {
   // eslint-disable-next-line no-useless-constructor
@@ -9,6 +10,10 @@ class AuthWaiting extends React.Component {
     super(props);
   }
 
+  componentWillMount() {
+    checkAuth(location.pathname)
+  }
+  
   componentDidUpdate() {
     if (this.props.user.appData.hasAuth) {
       this.props.history.push('/platform');

@@ -18,10 +18,12 @@
       display: flex;
       flex-direction: row;
       .nav-news {
+        padding-top: 10px;
         flex: 1;
       }
       .nav-setUp {
         flex: 1;
+        padding-top: 10px;
         padding-left: 50px;
       }
     }

@@ -1,4 +1,4 @@
-import { getOption, getUserOrder, addOrder, getAuditOrder, submitAuditOrder } from '../services/index';
+import { getOption, getUserOrder, addOrder, getAuditOrder, submitAuditOrder, confirmPay } from '../services/index';
 
 export default {
   namespace: 'order',
@@ -16,7 +16,9 @@ export default {
     uiData: {
       auditResState: false,// 审核员提交审核后的响应状态 true：修改成功； false：修改失败
       auditResMessage: '', // 审核员提交审核后的响应消息
-    }
+      payResState: false, // 支付成功后状态
+      payResMessage: '', // 支付成功响应信息
+    },
   },
   reducers: {
     // 设置订单器官、部位选项
@@ -78,7 +80,19 @@ export default {
           auditResMessage: action.payload.auditResMessage,
         },
       };
-    }
+    },
+    // 设置支付响应信息
+    setConfirmPay(state, action) {
+      const { uiData } = state;
+      return {
+        ...state,
+        uiData: {
+          ...uiData,
+          payResState: action.payload.payResState,
+          payResMessage: action.payload.payResMessage,
+        },
+      };
+    },
   },
   effects: {
     * getOption({ payload }, { call, put }) {
@@ -142,6 +156,20 @@ export default {
           payload: {
             auditResState: success,
             auditResMessage: message,
+          },
+        });
+      }
+      return response;
+    },
+    *confirmPay({ payload }, { call, put }) {
+      const response = yield call(confirmPay, payload);
+      if (response.status === 200) {
+        const { success, message } = response.data;
+        yield put({
+          type: 'setConfirmPay',
+          payload: {
+            payResState: success, // 支付成功后状态
+            payResMessage: message, // 支付成功响应信息
           },
         });
       }

@@ -5,7 +5,7 @@ import {
 import { connect } from 'dva';
 import HomePage from '../homePage';
 import './index.scss';
-
+import checkAuth from '../../utils/checkAuth';
 const { Column } = Table;
 const passOption = {
   PASS: 1,
@@ -23,6 +23,7 @@ class AuditInfo extends React.Component {
       writeIndex: null,
     };
   }
+
 
   componentDidMount() {
     const { dispatch } = this.props;
